@@ -1,0 +1,34 @@
+name: Daily Jobs Feed
+
+on:
+  schedule:
+    # 1am EST = 6am UTC (during EST/standard time)
+    # Note: during EDT (daylight saving), this will run at 2am ET
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  run-jobs-feed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install marimo requests pandas anthropic supabase python-dotenv aiohttp nest_asyncio
+
+      - name: Run jobs feed
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+        run: |
+          marimo run "daily runs/jobs_feed.py" --headless

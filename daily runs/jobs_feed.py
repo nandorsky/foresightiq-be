@@ -23,22 +23,24 @@ def _(mo):
 def _():
     print("Starting jobs feed script...")
 
+    import os
     import requests
     import json
     import pandas as pd
     import anthropic
-    import pyperclip
     from supabase import create_client, Client
     import time
     from typing import List, Dict
     import asyncio
     import aiohttp
     import nest_asyncio
+    from dotenv import load_dotenv
+    load_dotenv()
 
     # Supabase API
-    SUPABASE_URL = "https://joiadqjirxyxvikqfmqh.supabase.co"
-    SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvaWFkcWppcnh5eHZpa3FmbXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzNDk4MzEsImV4cCI6MjA0NjkyNTgzMX0.ETQn27LPXwovdMD4cApUUTI0d9z13G5XLRVEQMu_3Oc"
-    SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvaWFkcWppcnh5eHZpa3FmbXFoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczMTM0OTgzMSwiZXhwIjoyMDQ2OTI1ODMxfQ.-_RI7buYH5I_CbxWvjuNNtrnfZexpmjdeSdTG3VJGEc"
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    SUPABASE_KEY = os.environ["SUPABASE_KEY"]
+    SERVICE_ROLE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
     supabase: Client = create_client(SUPABASE_URL, SERVICE_ROLE_KEY)
     return aiohttp, asyncio, nest_asyncio, pd, requests, supabase, time
@@ -136,7 +138,7 @@ def _(mo):
 @app.cell
 def _(competitors_2, pd, requests, time):
     _url = 'https://professional-network-data.p.rapidapi.com/search-jobs'
-    _headers = {'x-rapidapi-key': 'e88f5d3d95msh96c8e7a091f4a90p1bee3cjsn2b537c4486ca', 'x-rapidapi-host': 'professional-network-data.p.rapidapi.com'}
+    _headers = {'x-rapidapi-key': os.environ["RAPIDAPI_KEY"], 'x-rapidapi-host': 'professional-network-data.p.rapidapi.com'}
     all_jobs = []
     for _, _row in competitors_2.iterrows():
         competitor_name = _row['competitor_name']
@@ -209,7 +211,7 @@ def _(mo):
 async def _(aiohttp, asyncio, jobs_df_1, nest_asyncio, pd, time):
     nest_asyncio.apply()
     _url = 'https://professional-network-data.p.rapidapi.com/get-job-details'
-    _headers = {'x-rapidapi-key': 'e88f5d3d95msh96c8e7a091f4a90p1bee3cjsn2b537c4486ca', 'x-rapidapi-host': 'professional-network-data.p.rapidapi.com'}
+    _headers = {'x-rapidapi-key': os.environ["RAPIDAPI_KEY"], 'x-rapidapi-host': 'professional-network-data.p.rapidapi.com'}
     MAX_REQUESTS_PER_MINUTE = 50
     MIN_INTERVAL = 60 / MAX_REQUESTS_PER_MINUTE
     last_request_time = 0
