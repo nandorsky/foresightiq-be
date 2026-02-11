@@ -1,0 +1,9 @@
+marimo
+requests
+pandas
+anthropic
+supabase
+python-dotenv
+aiohttp
+nest_asyncio
+resend
