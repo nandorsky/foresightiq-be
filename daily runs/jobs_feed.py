@@ -43,7 +43,7 @@ def _():
     SERVICE_ROLE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
     supabase: Client = create_client(SUPABASE_URL, SERVICE_ROLE_KEY)
-    return aiohttp, asyncio, nest_asyncio, pd, requests, supabase, time
+    return aiohttp, asyncio, nest_asyncio, os, pd, requests, supabase, time
 
 
 @app.cell(hide_code=True)
@@ -295,8 +295,7 @@ def _(job_descriptions_df, supabase: "Client"):
 
 
 @app.cell
-def _(job_descriptions_df):
-    import os
+def _(job_descriptions_df, os):
     import resend
     from datetime import datetime
 
