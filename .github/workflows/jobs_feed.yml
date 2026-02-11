@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install marimo requests pandas anthropic supabase python-dotenv aiohttp nest_asyncio
+          pip install marimo requests pandas anthropic supabase python-dotenv aiohttp nest_asyncio resend
 
       - name: Run jobs feed
         env:
@@ -30,5 +30,6 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           marimo run "daily runs/jobs_feed.py" --headless

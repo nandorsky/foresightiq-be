@@ -294,5 +294,27 @@ def _(job_descriptions_df, supabase: "Client"):
     return
 
 
+@app.cell
+def _(job_descriptions_df):
+    import os
+    import resend
+    from datetime import datetime
+
+    resend.api_key = os.environ["RESEND_API_KEY"]
+
+    job_count = len(job_descriptions_df)
+    run_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    resend.Emails.send({
+        "from": "onboarding@resend.dev",
+        "to": "nate@patent355.com",
+        "subject": "Jobs Feed Completed",
+        "html": f"<p>Jobs Feed has been completed successfully.</p>"
+                f"<p><strong>{job_count}</strong> new jobs inserted at {run_time}.</p>"
+    })
+    print("✅ Completion email sent to nate@patent355.com")
+    return
+
+
 if __name__ == "__main__":
     app.run()
